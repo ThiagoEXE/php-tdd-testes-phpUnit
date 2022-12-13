@@ -14,10 +14,16 @@ class AvaliadorTest extends TestCase
 
     private $leiloeiro;
 
+    public static function setUpBeforeClass():void{
+        parent::setUpBeforeClass();
+    }
+
     /*Antes de executar algum teste é executrado esse método que cria um leiloeiro, 
-    o PHPUnit ja entende que ele deve ser executado antes*/
+    o phpUnit ja entende que ele deve ser executado antes*/
     protected function setUp(): void
     {
+        echo "Executando setUp" . PHP_EOL;
+
         $this->leiloeiro = new Avaliador();
     }
 
@@ -29,6 +35,7 @@ class AvaliadorTest extends TestCase
      */
     public function testAvaliadorDeveEncontrarOMaiorValorDeLances(Leilao $leilao)
     {
+
 
 
         //verifica o código a ser testado
@@ -76,6 +83,8 @@ class AvaliadorTest extends TestCase
     }
     public function leilaoEmOrdemCrescente()
     {
+        echo "Criando em ordem crescente" . PHP_EOL;
+
         $leilao = new Leilao('Fiat 147 0KM');
         $joao = new Usuario('João');
         $maria = new Usuario('Maria');
@@ -86,11 +95,13 @@ class AvaliadorTest extends TestCase
         $leilao->recebeLance(new Lance($maria, 2500));
 
         return [
-            [$leilao]
+            'ordem-crescente' => [$leilao]
         ];
     }
     public function leilaoEmOrdemDecrescente()
     {
+        echo "Criando em ordem decrescente" . PHP_EOL;
+
         $leilao = new Leilao('Fiat 147 0KM');
         $joao = new Usuario('João');
         $maria = new Usuario('Maria');
@@ -101,11 +112,13 @@ class AvaliadorTest extends TestCase
         $leilao->recebeLance(new Lance($ana, 1700));
 
         return [
-            [$leilao]
+            'ordem-decrescente' => [$leilao]
         ];
     }
     public function leilaoEmOrdemAleatoria()
     {
+        echo "Criando em ordem aleatória" . PHP_EOL;
+
         $leilao = new Leilao('Fiat 147 0KM');
         $joao = new Usuario('João');
         $maria = new Usuario('Maria');
@@ -116,7 +129,7 @@ class AvaliadorTest extends TestCase
         $leilao->recebeLance(new Lance($ana, 1700));
 
         return [
-            [$leilao]
+            'ordem-aleatoria' => [$leilao]
         ];
     }
     public function entregaLeiloes()
