@@ -11,6 +11,16 @@ use PharIo\Manifest\Url;
 
 class AvaliadorTest extends TestCase
 {
+
+    private $leiloeiro;
+
+    /*Antes de executar algum teste é executrado esse método que cria um leiloeiro, 
+    o PHPUnit ja entende que ele deve ser executado antes*/
+    protected function setUp(): void
+    {
+        $this->leiloeiro = new Avaliador();
+    }
+
     /**
      * @dataProvider leilaoEmOrdemDecrescente
      * @dataProvider leilaoEmOrdemAleatoria
@@ -20,12 +30,11 @@ class AvaliadorTest extends TestCase
     public function testAvaliadorDeveEncontrarOMaiorValorDeLances(Leilao $leilao)
     {
 
-        $leiloeiro = new Avaliador();
 
         //verifica o código a ser testado
-        $leiloeiro->avalia($leilao);
+        $this->leiloeiro->avalia($leilao);
 
-        $maiorValor = $leiloeiro->getMaiorValor();
+        $maiorValor = $this->leiloeiro->getMaiorValor();
 
         //Verifica se a saída é a esperada
         self::assertEquals(2500, $maiorValor);
@@ -39,23 +48,27 @@ class AvaliadorTest extends TestCase
     public function testAvaliadorDeveEncontrarMenorValorDeLances(Leilao $leilao)
     {
 
-        $leiloeiro = new Avaliador();
 
         //verifica o código a ser testado
-        $leiloeiro->avalia($leilao);
+        $this->leiloeiro->avalia($leilao);
 
-        $menorValor = $leiloeiro->getMenorValor();
+        $menorValor = $this->leiloeiro->getMenorValor();
 
         //Verifica se a saída é a esperada
         self::assertEquals(1700, $menorValor);
     }
+    /**
+     * @dataProvider leilaoEmOrdemDecrescente
+     * @dataProvider leilaoEmOrdemAleatoria
+     * @dataProvider leilaoEmOrdemCrescente
+     *
+     */
     public function testAvaliadorDeveBuscarOsTresMaioresValores(Leilao $leilao)
     {
 
-        $leiloeiro = new Avaliador();
-        $leiloeiro->avalia($leilao);
+        $this->leiloeiro->avalia($leilao);
 
-        $maiores = $leiloeiro->getMaioresLances();
+        $maiores = $this->leiloeiro->getMaioresLances();
         static::assertCount(3, $maiores);
         static::assertEquals(2500, $maiores[0]->getValor());
         static::assertEquals(2000, $maiores[1]->getValor());
