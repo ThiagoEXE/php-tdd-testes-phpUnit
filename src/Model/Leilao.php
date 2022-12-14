@@ -17,6 +17,9 @@ class Leilao
 
     public function recebeLance(Lance $lance)
     {
+        if (!empty($this->lances) && $lance->getUsuario() == $this->lances[count($this->lances) - 1]->getUsuario()) {
+            return;
+        }
         $this->lances[] = $lance;
     }
 

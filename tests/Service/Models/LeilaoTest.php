@@ -9,18 +9,32 @@ use PHPUnit\Framework\TestCase;
 class LeilaoTest extends TestCase
 {
 
-    public function testLeilaoDeveReceberLances()
+    public function testLeilaoNaoDeveReceberLancesRepetidos()
     {
-        $joao = new Usuario('João');
-        $maria = new Usuario('Maria');
+        $leilao = new Leilao('Variante');
+        $ana = new Usuario('Ana');
 
-        $leilao = new Leilao('Fiat 147 0KM');
-        $leilao->recebeLance(new Lance($joao, 1000));
-        $leilao->recebeLance(new Lance($maria, 2000));
+        $leilao->recebeLance(new Lance($ana, 1000));
+        $leilao->recebeLance(new Lance($ana, 1500));
 
-        static::assertCount(2, $leilao->getLances());
+        static::assertCount(1, $leilao->getLances());
         static::assertEquals(1000, $leilao->getLances()[0]->getValor());
-        static::assertEquals(2000, $leilao->getLances()[1]->getValor());
+        
+    }
+    /**
+     * Undocumented function
+     *
+     * @dataProvider geraLances
+     */
+    public function testLeilaoDeveReceberLances(int $qtdLances, Leilao $leilao, array $valores)
+    {
+
+        static::assertCount($qtdLances, $leilao->getLances());
+
+        foreach($valores as $i => $valorEsperado){
+            static::assertEquals($valorEsperado, $leilao->getLances()[$i]->getValor());
+
+        }
     }
 
     public function geraLances(){
@@ -34,9 +48,10 @@ class LeilaoTest extends TestCase
         $leilaoCom1Lance = new Leilao('Fusca 1970 0KM');
         $leilaoCom1Lance->recebeLance(new Lance($maria, 5000));
 
+
         return [
-            [2, $leilaoCom2Lances, [1000,2000]],
-        [1,$leilaoCom2Lances, [1000]]
+           '2-lances' => [2, $leilaoCom2Lances, [1000,2000]],
+           '1-lance' => [1,$leilaoCom1Lance, [5000]]
     ];
     }
 }
